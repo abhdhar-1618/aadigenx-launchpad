@@ -1,38 +1,51 @@
 import { motion } from "framer-motion";
 import { Calendar, Clock, Sparkles, Users } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
+import logo from "@/assets/logo.png";
 
 const FORM_URL = "https://forms.gle/PdLLdrirh4gTmwr36";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Gold top bar */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-primary" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-primary z-20" />
 
-      {/* Background image */}
-      <div className="absolute inset-0">
+      {/* Academy branding bar */}
+      <div className="relative z-20 flex items-center justify-center gap-4 pt-8 pb-4 px-6">
+        <img
+          src={logo}
+          alt="Aadigenx Academy Logo"
+          className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain flex-shrink-0"
+        />
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
+          Aadigenx Academy
+        </h2>
+      </div>
+
+      {/* Hero image — fully visible, no overlays on the kids */}
+      <div className="relative w-full">
         <img
           src={heroBg}
           alt="Aadigenx Academy students"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-auto object-contain"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+        {/* Only a subtle bottom fade into the dark background */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 py-32 md:py-40">
+      {/* Content below the image */}
+      <div className="relative z-10 container mx-auto px-6 py-12 md:py-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-          className="max-w-2xl"
+          className="max-w-2xl mx-auto"
         >
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center justify-center gap-2 mb-6">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-primary text-sm font-medium tracking-wide uppercase">
-              Aadigenx Academy
+              Data Shastra Program
             </span>
           </div>
 
@@ -41,13 +54,13 @@ const HeroSection = () => {
             <span className="text-primary">Future-Ready</span> Learning
           </h1>
 
-          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-10 max-w-xl">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-10 max-w-xl mx-auto">
             Data Shastra by Aadigenx Academy introduces students to patterns,
             thinking clarity, and disciplined learning.
           </p>
 
           {/* Event highlights */}
-          <div className="flex flex-wrap gap-4 mb-10">
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
             {[
               { icon: Calendar, text: "Saturday, 28 March" },
               { icon: Clock, text: "5:00 PM – 7:00 PM" },
@@ -68,7 +81,7 @@ const HeroSection = () => {
           </div>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <motion.a
               href={FORM_URL}
               target="_blank"
