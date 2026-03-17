@@ -12,12 +12,7 @@ const HeroSection = () => {
       <div className="absolute top-0 left-0 right-0 h-1 bg-primary z-20" />
 
       {/* Academy branding bar */}
-      <div className="relative z-20 flex items-center justify-center gap-4 pt-8 pb-4 px-6">
-        <img
-          src={logo}
-          alt="Aadigenx Academy Logo"
-          className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain flex-shrink-0"
-        />
+      <div className="relative z-20 flex items-center justify-center pt-8 pb-4 px-6">
         <h2 className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
           Aadigenx Academy
         </h2>
