@@ -58,7 +58,7 @@ const HeroSection = () => {
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             {[
               { icon: Calendar, text: "Saturday, 28 March" },
-              { icon: Clock, text: "5:00 PM – 7:00 PM" },
+              { icon: Clock, text: "5:00 PM – 5:45 PM" },
               { icon: Sparkles, text: "₹11 Token of Shagun" },
               { icon: Users, text: "Limited Seats" },
             ].map((item, i) => (
