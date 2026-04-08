@@ -50,8 +50,8 @@ const WebinarSection = () => {
 
   const dropdownVariants = {
     hidden: { height: 0, opacity: 0 },
-    visible: { height: "auto", opacity: 1, transition: { duration: 0.35, ease: "easeOut" } },
-    exit: { height: 0, opacity: 0, transition: { duration: 0.25, ease: "easeIn" } },
+    visible: { height: "auto" as const, opacity: 1, transition: { duration: 0.35, ease: "easeOut" as const } },
+    exit: { height: 0, opacity: 0, transition: { duration: 0.25, ease: "easeIn" as const } },
   };
 
   return (
