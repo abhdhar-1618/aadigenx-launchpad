@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { Calendar, Clock, Sparkles, Users, GraduationCap, ArrowRight, BookOpen, Brain, MessageSquare, Table, Code, Database, BarChart3, Cpu, FlaskConical } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, Clock, Sparkles, Users, GraduationCap, ArrowRight, BookOpen, Brain, MessageSquare, Table, Code, Database, BarChart3, Cpu, FlaskConical, ChevronDown } from "lucide-react";
 
 const FORM_URL = "https://forms.gle/PdLLdrirh4gTmwr36";
 
@@ -25,7 +26,34 @@ const studentGrades9to12 = [
   { icon: Brain, label: "OpenAI / LLM APIs", detail: "Real-world AI applications" },
 ];
 
+interface TopicItemProps {
+  icon: React.ElementType;
+  label: string;
+  detail?: string;
+}
+
+const TopicItem = ({ icon: Icon, label, detail }: TopicItemProps) => (
+  <div className="flex items-start gap-3">
+    <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+      <Icon className="w-3.5 h-3.5 text-primary" />
+    </div>
+    <div>
+      <span className="text-foreground font-medium text-sm">{label}</span>
+      {detail && <span className="text-muted-foreground text-xs block">{detail}</span>}
+    </div>
+  </div>
+);
+
 const WebinarSection = () => {
+  const [parentOpen, setParentOpen] = useState(false);
+  const [studentOpen, setStudentOpen] = useState(false);
+
+  const dropdownVariants = {
+    hidden: { height: 0, opacity: 0 },
+    visible: { height: "auto" as const, opacity: 1, transition: { duration: 0.35, ease: "easeOut" as const } },
+    exit: { height: 0, opacity: 0, transition: { duration: 0.25, ease: "easeIn" as const } },
+  };
+
   return (
     <section className="py-24 px-6">
       <div className="container mx-auto max-w-4xl">
@@ -100,51 +128,77 @@ const WebinarSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-card p-8 flex flex-col border border-border/60 relative overflow-hidden group"
+            className="glass-card flex flex-col border border-border/60 relative overflow-hidden group"
           >
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary/70" />
 
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground">For Parents</h4>
-            </div>
-
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              Equip yourself to guide your child with clarity using modern AI tools and structured thinking approaches.
-            </p>
-
-            <div className="space-y-3 mb-6">
-              {parentTopics.map((topic, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <topic.icon className="w-3.5 h-3.5 text-primary" />
-                  </div>
-                  <div>
-                    <span className="text-foreground font-medium text-sm">{topic.label}</span>
-                    <span className="text-muted-foreground text-xs block">{topic.detail}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="gold-border-left mb-8">
-              <span className="text-foreground font-medium text-sm block">1st & 3rd Saturday of every month</span>
-              <span className="text-muted-foreground text-xs tabular-nums">5:00 PM – 5:45 PM</span>
-            </div>
-
-            <motion.a
-              href={FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center justify-center gap-2 border border-primary/40 text-primary font-semibold px-6 py-3 rounded-sm transition-all hover:border-primary hover:bg-primary/5 text-sm mt-auto"
+            {/* Clickable Header */}
+            <button
+              onClick={() => setParentOpen(!parentOpen)}
+              className="w-full p-8 pb-6 text-left flex items-start justify-between gap-4 cursor-pointer"
             >
-              Learn AI for Parenting
-              <ArrowRight className="w-4 h-4" />
-            </motion.a>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-foreground">For Parents</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed mt-1">
+                    Equip yourself to guide your child with clarity using modern AI tools.
+                  </p>
+                </div>
+              </div>
+              <motion.div
+                animate={{ rotate: parentOpen ? 180 : 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex-shrink-0 mt-1"
+              >
+                <ChevronDown className="w-5 h-5 text-primary" />
+              </motion.div>
+            </button>
+
+            {/* Expandable Content */}
+            <AnimatePresence initial={false}>
+              {parentOpen && (
+                <motion.div
+                  variants={dropdownVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="overflow-hidden"
+                >
+                  <div className="px-8 pb-8">
+                    <div className="border-t border-border/40 pt-5 mb-5">
+                      <span className="text-primary text-xs font-semibold tracking-wider uppercase mb-3 block">
+                        Topics Covered
+                      </span>
+                      <div className="space-y-3">
+                        {parentTopics.map((topic, i) => (
+                          <TopicItem key={i} {...topic} />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="gold-border-left mb-6">
+                      <span className="text-foreground font-medium text-sm block">1st & 3rd Saturday of every month</span>
+                      <span className="text-muted-foreground text-xs tabular-nums">5:00 PM – 5:45 PM</span>
+                    </div>
+
+                    <motion.a
+                      href={FORM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="inline-flex items-center justify-center gap-2 border border-primary/40 text-primary font-semibold px-6 py-3 rounded-sm transition-all hover:border-primary hover:bg-primary/5 text-sm w-full"
+                    >
+                      Learn AI for Parenting
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.a>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* Students Card */}
@@ -153,75 +207,88 @@ const WebinarSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="glass-card p-8 flex flex-col border border-border/60 relative overflow-hidden group"
+            className="glass-card flex flex-col border border-border/60 relative overflow-hidden group"
           >
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary/70" />
 
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-primary" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground">For Students</h4>
-            </div>
-
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              A structured, grade-wise pathway to build analytical thinking, data skills, and real-world problem-solving.
-            </p>
-
-            {/* Grades 6–8 */}
-            <div className="mb-5">
-              <span className="text-primary text-xs font-semibold tracking-wider uppercase mb-2.5 block">Grades 6–8</span>
-              <div className="space-y-2">
-                {studentGrades6to8.map((topic, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <topic.icon className="w-3.5 h-3.5 text-primary" />
-                    </div>
-                    <div>
-                      <span className="text-foreground font-medium text-sm">{topic.label}</span>
-                      {topic.detail && <span className="text-muted-foreground text-xs block">{topic.detail}</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-border/40 my-4" />
-
-            {/* Grades 9–12 */}
-            <div className="mb-6">
-              <span className="text-primary text-xs font-semibold tracking-wider uppercase mb-2.5 block">Grades 9–12</span>
-              <div className="space-y-2">
-                {studentGrades9to12.map((topic, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <topic.icon className="w-3.5 h-3.5 text-primary" />
-                    </div>
-                    <div>
-                      <span className="text-foreground font-medium text-sm">{topic.label}</span>
-                      {topic.detail && <span className="text-muted-foreground text-xs block">{topic.detail}</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="gold-border-left mb-8">
-              <span className="text-foreground font-medium text-sm block">2nd & 4th Saturday of every month</span>
-              <span className="text-muted-foreground text-xs tabular-nums">5:00 PM – 5:45 PM</span>
-            </div>
-
-            <motion.a
-              href={FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center justify-center gap-2 border border-primary/40 text-primary font-semibold px-6 py-3 rounded-sm transition-all hover:border-primary hover:bg-primary/5 text-sm mt-auto"
+            {/* Clickable Header */}
+            <button
+              onClick={() => setStudentOpen(!studentOpen)}
+              className="w-full p-8 pb-6 text-left flex items-start justify-between gap-4 cursor-pointer"
             >
-              Explore Student Pathway
-              <ArrowRight className="w-4 h-4" />
-            </motion.a>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
+                  <GraduationCap className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-foreground">For Students</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed mt-1">
+                    A structured, grade-wise pathway to build analytical thinking & data skills.
+                  </p>
+                </div>
+              </div>
+              <motion.div
+                animate={{ rotate: studentOpen ? 180 : 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex-shrink-0 mt-1"
+              >
+                <ChevronDown className="w-5 h-5 text-primary" />
+              </motion.div>
+            </button>
+
+            {/* Expandable Content */}
+            <AnimatePresence initial={false}>
+              {studentOpen && (
+                <motion.div
+                  variants={dropdownVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="overflow-hidden"
+                >
+                  <div className="px-8 pb-8">
+                    <div className="border-t border-border/40 pt-5 mb-5">
+                      <span className="text-primary text-xs font-semibold tracking-wider uppercase mb-3 block">
+                        Grades 6–8
+                      </span>
+                      <div className="space-y-2">
+                        {studentGrades6to8.map((topic, i) => (
+                          <TopicItem key={i} {...topic} />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-t border-border/40 my-4 pt-5 mb-5">
+                      <span className="text-primary text-xs font-semibold tracking-wider uppercase mb-3 block">
+                        Grades 9–12
+                      </span>
+                      <div className="space-y-2">
+                        {studentGrades9to12.map((topic, i) => (
+                          <TopicItem key={i} {...topic} />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="gold-border-left mb-6">
+                      <span className="text-foreground font-medium text-sm block">2nd & 4th Saturday of every month</span>
+                      <span className="text-muted-foreground text-xs tabular-nums">5:00 PM – 5:45 PM</span>
+                    </div>
+
+                    <motion.a
+                      href={FORM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="inline-flex items-center justify-center gap-2 border border-primary/40 text-primary font-semibold px-6 py-3 rounded-sm transition-all hover:border-primary hover:bg-primary/5 text-sm w-full"
+                    >
+                      Explore Student Pathway
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.a>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
