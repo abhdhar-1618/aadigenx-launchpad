@@ -9,7 +9,7 @@ const recurringSchedule = [
     icon: Users,
     description: "Awareness sessions for parents on modern learning frameworks, student progress tracking, and how to support future-ready education at home.",
     sessions: [
-      { day: "Every Saturday", time: "5:00 PM – 5:45 PM" },
+      { day: "1st & 3rd Saturday of every month", time: "5:00 PM – 5:45 PM" },
     ],
     cta: "Reserve Your Spot",
   },
@@ -18,8 +18,7 @@ const recurringSchedule = [
     icon: GraduationCap,
     description: "Interactive workshops where students explore pattern recognition, analytical thinking, and structured study techniques.",
     sessions: [
-      { day: "Every Wednesday", time: "7:00 PM – 9:00 PM" },
-      { day: "Every Saturday", time: "7:00 PM – 9:00 PM" },
+      { day: "2nd & 4th Saturday of every month", time: "5:00 PM – 5:45 PM" },
     ],
     cta: "Join the Next Webinar",
   },
