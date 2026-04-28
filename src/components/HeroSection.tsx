@@ -88,14 +88,14 @@ const HeroSection = () => {
               Register Now
             </motion.a>
             <motion.a
-              href="https://www.aadigenix.com/aadian"
+              href={FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center justify-center border border-primary/40 text-primary font-semibold px-8 py-4 rounded-sm transition-all hover:border-primary hover:bg-primary/5 hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] text-center"
+              className="inline-flex items-center justify-center border border-primary/40 text-primary font-semibold px-8 py-4 rounded-sm transition-all hover:border-primary hover:bg-primary/5 text-center"
             >
-              Visit Our Website
+              Attend Awareness Webinar
             </motion.a>
           </div>
         </motion.div>
